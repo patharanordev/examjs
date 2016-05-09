@@ -1,0 +1,17 @@
+/* From https://www.google.com/fonts/#UsePlace:use */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+
+.container {
+	width: 100%;
+    height:100%;
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+	display: table;
+}
+
+.header {
+    height:200px;
+}
+
+.question_block {
+}
