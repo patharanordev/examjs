@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <!-- Required meta tags always come first -->
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	    <!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+	    <!-- Custom CSS -->
+	    <link rel="stylesheet" href="./public/css/english.css">
+
+	</head>
+	<body>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-1">Correct</div>
+				<div class="col-md-1" id="numCorrect">0</div>
+				<div class="col-md-1">Wrong</div>
+				<div class="col-md-1" id="numWrong">0</div>
+			</div>
+			<div class="header">
+			</div>
+		</div>
+		<div class="container">
+			<div class="question_block">
+				<div class="row">
+					<div class="col-md-4"></div>
+					<div class="col-md-4"><h1 id="question">Vocabuary</h1></div>
+					<div class="col-md-4"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">&nbsp;</div>
+					<div class="col-md-4">&nbsp;</div>
+					<div class="col-md-4">&nbsp;</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6"><h3 id="choice1" class="choice">choice1</h3></div>
+					<div class="col-md-6"><h3 id="choice2" class="choice">choice2</h3></div>
+				</div>
+				<div class="row">
+					<div class="col-md-6"><h3 id="choice3" class="choice">choice3</h3></div>
+					<div class="col-md-6"><h3 id="choice4" class="choice">choice4</h3></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- jQuery first, then Bootstrap JS. -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>
+		<script src="./vocabuary.js"></script>
+		<script>
+
+			var questionGone = [];
+			var choiceGone = [];
+
+			var clearChoices = function(){
+				choiceGone = [];
+				$('#choice1').html('choice1');
+				$('#choice2').html('choice2');
+				$('#choice3').html('choice3');
+				$('#choice4').html('choice4');
+			}
+
+			var correctChoice = null;
+
+			var randomChoice = function(questionList, reverveChoice){
+				for(;;){
+					// Random answer from question
+					var randomChoice = Math.floor((Math.random() * questionList.length) + 1);
+					var wrongAnswer = questionList[randomChoice-1].answer;
+
+					// Reject duplicate choice
+					if($.inArray(wrongAnswer, choiceGone)==-1){
+						choiceGone.push(wrongAnswer);
+
+						//console.log('Random question index ' + (randomChoice-1) + ' : ' + wrongAnswer);
+
+						if(correctChoice!=wrongAnswer){
+
+							for(;;){
+								// Random choice index
+								var wrongChoice = Math.floor((Math.random() * 4) + 1);
+
+								//console.log('Random choice : ' + wrongChoice);
+
+								if($.inArray(wrongChoice, reverveChoice)==-1){
+									$('#choice'+wrongChoice).html(wrongAnswer);
+									reverveChoice.push(wrongChoice);
+
+									//console.log('Set ' + wrongAnswer + ' to choice#' + wrongChoice);
+									break;
+								} else {
+									//console.log('Choice index ' + wrongChoice + ' was reserved');
+								}
+							}
+
+							break;
+						}
+					}
+				}
+			}
+
+			var resetScore = function(){
+				// Clear scores
+				$('#numCorrect').html('0');
+				$('#numWrong').html('0');
+			};
+
+			var randomQuestion = function(){
+				if(questionList.length==questionGone.length){
+					// Show score
+
+
+					// Test again?
+					var select = confirm("Do you want to test again?");
+					if(select==true){
+						questionGone = [];
+						resetScore();
+						randomQuestion();
+					} else {
+						// Do something
+					}
+				} else {
+					for(;;){
+						var questionIndex = Math.floor((Math.random() * questionList.length) + 1);
+						var question = questionList[questionIndex-1].question;
+
+						// Reject duplicate question
+						if($.inArray(question, questionGone)==-1){
+							questionGone.push(question);
+
+							$('#question').html(question);
+
+							// Random paste correct choice
+							var choice = Math.floor((Math.random() * 4) + 1);
+							
+							correctChoice = questionList[questionIndex-1].answer;
+
+							// Clear old choices
+							clearChoices();
+
+							// Protect duplicate choice
+							var reverveChoice = [];
+							reverveChoice.push(choice);
+							$('#choice'+choice).html(correctChoice);
+							//console.log('Set ' + correctChoice + ' to choice#' + choice);
+
+							// Random remain choices
+							randomChoice(questionList, reverveChoice);
+							randomChoice(questionList, reverveChoice);
+							randomChoice(questionList, reverveChoice);
+
+							break;
+						}
+					}
+				}
+			};
+
+			$('.choice').click(function(){
+				if($(this).html()==correctChoice){
+					$('#numCorrect').html(parseInt($('#numCorrect').html())+1);
+					randomQuestion();
+				} else {
+					$('#numWrong').html(parseInt($('#numWrong').html())+1);
+					randomQuestion();
+				}
+			});
+
+			randomQuestion();
+		</script>
+	</body>
+</html>
