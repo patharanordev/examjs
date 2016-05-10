@@ -1,7 +1,7 @@
 # examjs
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A8YE92K9QM7NA)
 
-You can design your exam by using `examjs` template.
+You can design your exam by using `examjs` template. Let's check your vocabulary( EN to TH ) via the exam [here](https://patharanordev.github.io/examjs/). If you're confidence, please share your score. :)
 
 ## Features
 
