@@ -11,6 +11,11 @@ You can design your exam by using `examjs` template. Let's check your vocabulary
 - [ ] Time base
 - [ ] Summary score
 - [x] Re-test confirmation
+- [ ] Show animation
+- [ ] Server side
+- [x] Client side
+- [ ] Websocket
+- [ ] Ranking
 
 ## Modify the exam
 
